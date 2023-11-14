@@ -41,6 +41,10 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:postgresql:1.16.3")
+    testImplementation(kotlin("test"))
+    testImplementation("org.flywaydb:flyway-core:9.3.1")
+
 }
 
 flyway {

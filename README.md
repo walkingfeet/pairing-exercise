@@ -95,3 +95,5 @@ Out of scope - as there may be additional cases to have one
 7. Contract first - public API may have contract first principle. Out of scope
 
 DN comments - They are not part of documentation but comments to understand why solution was made
+
+Used style of projects as in organisation - repository model and common view model
