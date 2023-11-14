@@ -47,7 +47,8 @@ flyway {
     url = dbConf.getProperty("DATABASE_URL")
     user = dbConf.getProperty("POSTGRES_USER")
     password = dbConf.getProperty("POSTGRES_PASSWORD")
-    locations = arrayOf(dbConf.getProperty("DATABASE_MIGRATION"))
+    // DN: commented - works without it as it is default location - in real project would delete this
+    // locations = arrayOf(dbConf.getProperty("DATABASE_MIGRATION"))
 }
 
 tasks.withType<KotlinCompile> {
