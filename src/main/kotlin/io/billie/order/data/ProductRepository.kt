@@ -13,10 +13,7 @@ import java.sql.ResultSet
 import java.util.UUID
 
 @Repository
-class ProductRepository{
-
-    @Autowired
-    private lateinit var jdbcTemplate: NamedParameterJdbcTemplate
+class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
 
     fun createProduct(productRequest: ProductRequest): UUID {
         // DN: Other values are controlled by database as in organisation logic

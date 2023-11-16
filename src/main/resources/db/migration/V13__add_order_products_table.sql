@@ -5,8 +5,8 @@ CREATE TABLE orders_schema.product_orders(
     products_amount_in_order int not null CONSTRAINT products_amount_in_order CHECK (products_amount_in_order > 0),
     -- DN: There is a good tone to have such constraint, but it would be double checked in application too, it's ok until performance is not suffer
     -- DN: Also application should be responsible for such checks - we would not cover database error - if it catches - means that application has a bug and should be alerted
-    products_amount_shipped_by_merchant int not null CONSTRAINT products_amount_shipped_by_merchant_is_less_than_product_amount_in_order
-            CHECK (products_amount_shipped_by_merchant > 0 and products_amount_shipped_by_merchant <= products_amount_in_order),
+    products_amount_shipped int not null CONSTRAINT products_amount_shipped_is_less_than_product_amount_in_order
+            CHECK (products_amount_shipped > 0 and products_amount_shipped <= products_amount_in_order),
     created timestamp not null DEFAULT current_timestamp,
     updated timestamp not null DEFAULT current_timestamp,
     -- In one order should not have more than one order
