@@ -39,18 +39,17 @@ Feel free to change the folder structure or anything else in the project
 #### Prerequisites
 We assume that you have docker, docker compose, and Java 15 installed, and can run gradle
 
-Running the tests:
-```shell
-cd <project_root>
-docker compose up database -d
-gradle flywayMigrate
-gradle clean build
-docs at -> http://localhost:8080/swagger-ui/index.html
+Tests using testcontainers, make sure to have docker daemon launched
+
+Enjoy local start with 
+
+```bash
+   docker compose up
 ```
-Work has been started but not done yet to containerise the kotlin service.
-
-The service runs in the host right now.  Feel free to fix that if it makes your life easier
-
+Docs are
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
 ### Solution
 Implementation steps
@@ -94,6 +93,7 @@ Out of scope - as there may be additional cases to have one
 6. Using real client instead of mockmvc - real http client allows test application clearer than mockmvc - and have better cover
 7. Contract first - public API may have contract first principle. Out of scope
 8. Validation of query - max products amount in order, max amount etc.
+9. Traefik setup - removed it for simplicity of the project - it requires additional setup which not suites in time
 
 DN comments - They are not part of documentation but comments to understand why solution was made
 
