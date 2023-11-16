@@ -2,6 +2,7 @@ package io.billie.order.data
 
 import io.billie.order.model.ProductOrder
 import io.billie.order.viewmodel.ProductInOrder
+import io.billie.order.viewmodel.ProductShipment
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -14,9 +15,9 @@ class ProductOrderRepository(
 ) {
 
     fun createOrderProducts(orderId: UUID, orderedItems: List<ProductInOrder>) {
-        val sql = "INSERT INTO orders_schema.product_orders (id, order_id, product_id, products_amount_in_order, " +
-                "products_amount_shipped, created, updated) VALUES (:id, :orderId, :productId, :productsAmountInOrder, " +
-                ":productsAmountShipped, :created, :updated)"
+        val sql = "INSERT INTO orders_schema.product_orders (order_id, product_id, products_amount_in_order, " +
+                "products_amount_shipped) VALUES (:orderId, :productId, :productsAmountInOrder, " +
+                ":productsAmountShipped)"
 
         val batchArgs = orderedItems.map {
             mapOf(
@@ -34,7 +35,7 @@ class ProductOrderRepository(
      * Method with locking rows for further update
      * Usage only in transaction
      */
-    fun selectToUpdate(orderId: UUID, productList: List<UUID>): List<ProductOrder> {
+    fun selectToUpdateLock(orderId: UUID, productList: List<UUID>): List<ProductOrder> {
         val sql = "SELECT id, order_id, product_id, products_amount_in_order, products_amount_shipped, created, updated " +
                 "FROM orders_schema.product_orders WHERE order_id = :orderId AND product_id IN (:productList) FOR UPDATE"
 
@@ -46,9 +47,9 @@ class ProductOrderRepository(
         return namedParameterJdbcTemplate.query(sql, paramMap, ProductOrderRowMapper())
     }
 
-    fun batchUpdateProductsAmountShipped(orderId: UUID, productUpdates: List<ProductUpdate>) {
+    fun batchUpdateProductsAmountShipped(orderId: UUID, productUpdates: List<ProductShipment>) {
         val sql = "UPDATE orders_schema.product_orders " +
-                "SET products_amount_shipped = products_amount_shipped + :newProductsAmountShipped " +
+                "SET products_amount_shipped = products_amount_shipped + :additionalAmountShipped " +
                 "WHERE order_id = :orderId AND product_id = :productId"
 
         val batchArgs = productUpdates.map {
@@ -75,16 +76,14 @@ class ProductOrderRepository(
 
         val paramMap = mapOf("orderId" to orderId)
 
-        return namedParameterJdbcTemplate.queryForObject(sql, paramMap, Boolean::class.java) ?: false
+        val isAnyNotDelivered = namedParameterJdbcTemplate.queryForObject(sql, paramMap, Boolean::class.java)
+
+        return !(isAnyNotDelivered ?: false)
     }
-
-    data class ProductUpdate(val productId: UUID, val additionalAmountShipped: Int)
-
-
 
     fun findProductOrdersByOrderId(orderId: UUID): List<ProductOrder> {
         val sql = "SELECT id, order_id, product_id, products_amount_in_order, products_amount_shipped, created, updated " +
-                "FROM orders_schema.product_orders WHERE order_id = :orderId"
+                "FROM orders_schema.product_orders WHERE order_id = :orderId ORDER BY created"
 
         val paramMap = mapOf("orderId" to orderId)
 

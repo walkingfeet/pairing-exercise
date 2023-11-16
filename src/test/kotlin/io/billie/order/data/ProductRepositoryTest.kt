@@ -44,10 +44,4 @@ class ProductRepositoryTest: SpringIntegrationTest() {
         )
         assertEquals(expected, result)
     }
-
-    @Test
-    fun shouldThrowExceptionWithUnknownOrganisation() {
-
-    }
-
 }

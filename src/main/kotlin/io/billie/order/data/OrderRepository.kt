@@ -16,16 +16,16 @@ import java.util.UUID
 class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
 
 
-    fun createOrder(bayerId: UUID,
+    fun createOrder(buyerId: UUID,
                     merchantId: UUID,
                     totalPrice: BigDecimal,
                     status: OrderStatus): UUID {
-        val sql = """INSERT INTO orders_schema.orders(bayer_id, merchant_id, total_price, status)
-            VALUES (:bayerId, :merchantId, :totalPrice, :status)
+        val sql = """INSERT INTO orders_schema.orders(buyer_id, merchant_id, total_price, status)
+            VALUES (:buyerId, :merchantId, :totalPrice, :status)
         """.trimIndent()
 
         val params = MapSqlParameterSource()
-            .addValue("bayerId", bayerId)
+            .addValue("buyerId", buyerId)
             .addValue("merchantId", merchantId)
             .addValue("totalPrice", totalPrice)
             .addValue("status", status.toString())
@@ -49,7 +49,7 @@ class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
     }
 
     fun findOrderById(orderId: UUID): Order? {
-        val sql = "SELECT id, bayer_id, merchant_id, total_price, status, created, updated " +
+        val sql = "SELECT id, buyer_id, merchant_id, total_price, status, created, updated " +
                 "FROM orders_schema.orders " +
                 "WHERE id = :orderId"
 
@@ -62,7 +62,7 @@ class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
         override fun mapRow(rs: ResultSet, rowNum: Int): Order {
             return Order(
                 id = rs.getObject("id", UUID::class.java),
-                buyerId = rs.getObject("bayer_id", UUID::class.java),
+                buyerId = rs.getObject("buyer_id", UUID::class.java),
                 merchantId = rs.getObject("merchant_id", UUID::class.java),
                 totalPrice = rs.getBigDecimal("total_price"),
                 status = OrderStatus.valueOf(rs.getString("status")),

@@ -7,7 +7,7 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.Size
 
 data class CheckoutOrderRequest(
-    val bayerId: UUID,
+    val buyerId: UUID,
     val merchantId: UUID,
     val totalPrice: BigDecimal,
     @Valid
