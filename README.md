@@ -92,8 +92,7 @@ I would use some queue service to implement this logic. It's out of scope for cu
 Out of scope - as there may be additional cases to have one
 6. Using real client instead of mockmvc - real http client allows test application clearer than mockmvc - and have better cover
 7. Contract first - public API may have contract first principle. Out of scope
-8. Validation of query - max products amount in order, max amount etc.
-9. Traefik setup - removed it for simplicity of the project - it requires additional setup which not suites in time
+8. Traefik setup - removed it for simplicity of the project - it requires additional setup which not suites in time
 
 DN comments - They are not part of documentation but comments to understand why solution was made
 

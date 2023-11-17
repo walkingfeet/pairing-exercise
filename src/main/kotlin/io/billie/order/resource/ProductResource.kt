@@ -11,12 +11,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
-@Controller("/products")
+@RestController
+@RequestMapping("/products")
 class ProductResource(val productService: ProductService) {
 
-    @PostMapping("")
+    @PostMapping
     @ApiResponses(
         value = [
             ApiResponse(
