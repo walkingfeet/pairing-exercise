@@ -1,4 +1,4 @@
-package io.billie.functional.data
+package io.billie.organisations.functional.data
 
 import java.text.SimpleDateFormat
 import java.util.*

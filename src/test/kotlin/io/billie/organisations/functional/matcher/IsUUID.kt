@@ -1,4 +1,4 @@
-package io.billie.functional.matcher
+package io.billie.organisations.functional.matcher
 
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher

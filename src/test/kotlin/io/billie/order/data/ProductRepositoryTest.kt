@@ -1,7 +1,7 @@
 package io.billie.order.data
 
 import io.billie.SpringIntegrationTest
-import io.billie.order.viewmodel.ProductRequest
+import io.billie.order.viewmodel.CreateProductRequest
 import io.billie.organisations.data.OrganisationRepository
 import io.billie.organisations.viewmodel.ContactDetailsRequest
 import io.billie.organisations.viewmodel.LegalEntityType
@@ -28,19 +28,19 @@ class ProductRepositoryTest: SpringIntegrationTest() {
 
         val organisationId = organisationRepository.create(organisationRequest)
 
-        val productRequestFirst = ProductRequest("Product name one", organisationId)
-        val productRequestSecond = ProductRequest("Product name second", organisationId)
+        val createProductRequestFirst = CreateProductRequest("Product name one", organisationId)
+        val createProductRequestSecond = CreateProductRequest("Product name second", organisationId)
 
-        val productIdFirst = productRepository.createProduct(productRequestFirst)
-        val productIdSecond = productRepository.createProduct(productRequestSecond)
+        val productIdFirst = productRepository.createProduct(createProductRequestFirst)
+        val productIdSecond = productRepository.createProduct(createProductRequestSecond)
 
         val result = productRepository.findProductsByOrganisationId(organisationId)
 
         assertEquals(result.size, 2, "Product list length should be 2")
         // order is backward
         val expected = arrayListOf(
-            result[0].copy(id = productIdSecond, name = productRequestSecond.name),
-            result[1].copy(id = productIdFirst, name = productRequestFirst.name)
+            result[0].copy(id = productIdSecond, name = createProductRequestSecond.name),
+            result[1].copy(id = productIdFirst, name = createProductRequestFirst.name)
         )
         assertEquals(expected, result)
     }

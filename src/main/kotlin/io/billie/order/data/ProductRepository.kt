@@ -1,8 +1,7 @@
 package io.billie.order.data
 
-import io.billie.order.viewmodel.ProductRequest
+import io.billie.order.viewmodel.CreateProductRequest
 import io.billie.order.viewmodel.ProductResponse
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -15,7 +14,7 @@ import java.util.UUID
 @Repository
 class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
 
-    fun createProduct(productRequest: ProductRequest): UUID {
+    fun createProduct(createProductRequest: CreateProductRequest): UUID {
         // DN: Other values are controlled by database as in organisation logic
         val sql = """
             INSERT INTO orders_schema.products (name, organisation_id)
@@ -23,8 +22,8 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
         """.trimIndent()
 
         val params = MapSqlParameterSource()
-            .addValue("name", productRequest.name)
-            .addValue("organisationId", productRequest.organisationId)
+            .addValue("name", createProductRequest.name)
+            .addValue("organisationId", createProductRequest.organisationId)
 
         val keyHolder: KeyHolder = GeneratedKeyHolder()
 
@@ -54,11 +53,26 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
         )
     }
 
+    fun findProductsById(productId: UUID): ProductResponse? {
+        val sql = "   SELECT id, name, organisation_id, created, updated " +
+                "            FROM orders_schema.products " +
+                "            WHERE id = :productId "
+
+        val params = mapOf("productId" to productId)
+
+        return jdbcTemplate.queryForObject(
+            sql,
+            params,
+            ProductRowMapper()
+        )
+    }
+
     private class ProductRowMapper : RowMapper<ProductResponse> {
         override fun mapRow(rs: ResultSet, rowNum: Int): ProductResponse {
             return ProductResponse(
                 id = UUID.fromString(rs.getString("id")),
                 name = rs.getString("name"),
+                organisationId = UUID.fromString(rs.getString("organisation_id")),
                 created = rs.getTimestamp("created").toInstant(),
                 updated = rs.getTimestamp("updated").toInstant()
             )

@@ -21,7 +21,7 @@ import javax.validation.Valid
 class OrganisationResource(val service: OrganisationService) {
 
     @GetMapping
-    fun index(): List<OrganisationResponse> = service.findOrganisations()
+    fun listOrganisations(): List<OrganisationResponse> = service.findOrganisations()
 
     @PostMapping
     @ApiResponses(
@@ -37,7 +37,7 @@ class OrganisationResource(val service: OrganisationService) {
             ),
             ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])]
     )
-    fun post(@Valid @RequestBody organisation: OrganisationRequest): Entity {
+    fun createOrganisation(@Valid @RequestBody organisation: OrganisationRequest): Entity {
         try {
             val id = service.createOrganisation(organisation)
             return Entity(id)

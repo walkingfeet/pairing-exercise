@@ -4,8 +4,8 @@ import io.billie.SpringIntegrationTest
 import io.billie.order.model.OrderStatus
 import io.billie.order.model.ProductOrder
 import io.billie.order.viewmodel.ProductInOrder
-import io.billie.order.viewmodel.ProductRequest
-import io.billie.order.viewmodel.ProductShipment
+import io.billie.order.viewmodel.CreateProductRequest
+import io.billie.order.viewmodel.ShippedProduct
 import io.billie.organisations.data.OrganisationRepository
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
@@ -73,8 +73,8 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
     }
 
     private fun createTwoProducts(merchantOrgId: UUID): Pair<UUID, UUID> {
-        val productOneId = productRepository.createProduct(ProductRequest("first", merchantOrgId))
-        val productTwoId = productRepository.createProduct(ProductRequest("second", merchantOrgId))
+        val productOneId = productRepository.createProduct(CreateProductRequest("first", merchantOrgId))
+        val productTwoId = productRepository.createProduct(CreateProductRequest("second", merchantOrgId))
         return Pair(productOneId, productTwoId)
     }
 
@@ -94,7 +94,7 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
         val createdListOfProducts = listOf(ProductInOrder(productOneId, 4), ProductInOrder(productTwoId, 6))
         productOrderRepository.createOrderProducts(orderId, createdListOfProducts)
 
-        val productUpdates = listOf(ProductShipment(productOneId, 2), ProductShipment(productTwoId, 3))
+        val productUpdates = listOf(ShippedProduct(productOneId, 2), ShippedProduct(productTwoId, 3))
         productOrderRepository.batchUpdateProductsAmountShipped(orderId, productUpdates)
 
 
@@ -105,7 +105,7 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
                 orderId = orderId,
                 productId = createdListOfProducts[0].productId,
                 productsAmountInOrder = createdListOfProducts[0].amount,
-                productsAmountShipped = productUpdates[0].additionalAmountShipped,
+                productsAmountShipped = productUpdates[0].amount,
                 created = result[0].created,
                 updated = result[0].updated
             ),
@@ -114,7 +114,7 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
                 orderId = orderId,
                 productId = createdListOfProducts[1].productId,
                 productsAmountInOrder = createdListOfProducts[1].amount,
-                productsAmountShipped = productUpdates[1].additionalAmountShipped,
+                productsAmountShipped = productUpdates[1].amount,
                 created = result[1].created,
                 updated = result[1].updated
             )
@@ -136,9 +136,9 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
         val createdListOfProducts = listOf(ProductInOrder(productOneId, 4), ProductInOrder(productTwoId, 6))
         productOrderRepository.createOrderProducts(orderId, createdListOfProducts)
 
-        val productUpdatesFirst = listOf(ProductShipment(productOneId, 3), ProductShipment(productTwoId, 5))
+        val productUpdatesFirst = listOf(ShippedProduct(productOneId, 3), ShippedProduct(productTwoId, 5))
         productOrderRepository.batchUpdateProductsAmountShipped(orderId, productUpdatesFirst)
-        val productUpdatesSecond = listOf(ProductShipment(productOneId, 1), ProductShipment(productTwoId, 1))
+        val productUpdatesSecond = listOf(ShippedProduct(productOneId, 1), ShippedProduct(productTwoId, 1))
         productOrderRepository.batchUpdateProductsAmountShipped(orderId, productUpdatesSecond)
 
         val shipped = productOrderRepository.isAllProductsInOrderAreShipped(orderId)
@@ -165,7 +165,7 @@ class ProductOrderRepositoryTest: SpringIntegrationTest() {
                 log.debug("Waiting for main transaction update")
                 latch.await() // Wait for the main transaction to acquire the lock
                 log.debug("Started update of product")
-                val productUpdatesFirst = listOf(ProductShipment(productOneId, 3), ProductShipment(productTwoId, 5))
+                val productUpdatesFirst = listOf(ShippedProduct(productOneId, 3), ShippedProduct(productTwoId, 5))
                 productOrderRepository.batchUpdateProductsAmountShipped(orderId, productUpdatesFirst)
                 log.debug("Finished update of products")
                 actionOrderLog.add(updateFinished)

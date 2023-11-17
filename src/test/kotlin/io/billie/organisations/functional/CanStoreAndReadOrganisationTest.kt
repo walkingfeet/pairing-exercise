@@ -1,17 +1,17 @@
-package io.billie.functional
+package io.billie.organisations.functional
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.billie.SpringIntegrationTest
-import io.billie.functional.data.Fixtures.bbcContactFixture
-import io.billie.functional.data.Fixtures.bbcFixture
-import io.billie.functional.data.Fixtures.orgRequestJson
-import io.billie.functional.data.Fixtures.orgRequestJsonCountryCodeBlank
-import io.billie.functional.data.Fixtures.orgRequestJsonCountryCodeIncorrect
-import io.billie.functional.data.Fixtures.orgRequestJsonNoName
-import io.billie.functional.data.Fixtures.orgRequestJsonNameBlank
-import io.billie.functional.data.Fixtures.orgRequestJsonNoContactDetails
-import io.billie.functional.data.Fixtures.orgRequestJsonNoCountryCode
-import io.billie.functional.data.Fixtures.orgRequestJsonNoLegalEntityType
+import io.billie.organisations.functional.data.Fixtures.bbcContactFixture
+import io.billie.organisations.functional.data.Fixtures.bbcFixture
+import io.billie.organisations.functional.data.Fixtures.orgRequestJson
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonCountryCodeBlank
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonCountryCodeIncorrect
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonNoName
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonNameBlank
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonNoContactDetails
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonNoCountryCode
+import io.billie.organisations.functional.data.Fixtures.orgRequestJsonNoLegalEntityType
 import io.billie.organisations.viewmodel.Entity
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
@@ -25,9 +25,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.*
 
-
-// TODO: Test containers
-// TODO: Docker compose up for manual testing
 class CanStoreAndReadOrganisationTest: SpringIntegrationTest() {
 
     @Autowired

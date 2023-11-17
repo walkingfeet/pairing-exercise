@@ -1,7 +1,7 @@
-package io.billie.functional
+package io.billie.organisations.functional
 
 import io.billie.SpringIntegrationTest
-import io.billie.functional.matcher.IsUUID.isUuid
+import io.billie.organisations.functional.matcher.IsUUID.isUuid
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON

@@ -2,7 +2,7 @@ package io.billie.order.data
 
 import io.billie.order.model.ProductOrder
 import io.billie.order.viewmodel.ProductInOrder
-import io.billie.order.viewmodel.ProductShipment
+import io.billie.order.viewmodel.ShippedProduct
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -47,7 +47,7 @@ class ProductOrderRepository(
         return namedParameterJdbcTemplate.query(sql, paramMap, ProductOrderRowMapper())
     }
 
-    fun batchUpdateProductsAmountShipped(orderId: UUID, productUpdates: List<ProductShipment>) {
+    fun batchUpdateProductsAmountShipped(orderId: UUID, productUpdates: List<ShippedProduct>) {
         val sql = "UPDATE orders_schema.product_orders " +
                 "SET products_amount_shipped = products_amount_shipped + :additionalAmountShipped " +
                 "WHERE order_id = :orderId AND product_id = :productId"
@@ -56,7 +56,7 @@ class ProductOrderRepository(
             mapOf(
                 "orderId" to orderId,
                 "productId" to it.productId,
-                "additionalAmountShipped" to it.additionalAmountShipped
+                "additionalAmountShipped" to it.amount
             )
         }.toTypedArray()
 
