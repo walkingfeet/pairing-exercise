@@ -39,7 +39,7 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
 
     // DN: Method to expand in future - for example we are using some list in UI
     fun findProductsByOrganisationId(organisationId: UUID): List<ProductResponse> {
-        val sql = "   SELECT id, name, created, updated " +
+        val sql = "   SELECT id, organisation_id, name, created, updated " +
                 "            FROM orders_schema.products " +
                 "            WHERE organisation_id = :organisation_id " +
                 "            ORDER BY created DESC "

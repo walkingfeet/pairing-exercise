@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank
 
 @Table("ORGANISATIONS")
 data class OrganisationRequest(
+
     @field:NotBlank val name: String,
     @JsonFormat(pattern = "dd/MM/yyyy") @JsonProperty("date_founded") val dateFounded: LocalDate,
     @field:NotBlank @JsonProperty("country_code") val countryCode: String,

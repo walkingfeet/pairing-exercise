@@ -1,3 +1,5 @@
 package io.billie.organisations.data
 
-class UnableToFindCountry(val countryCode: String) : RuntimeException()
+import io.billie.order.exception.SimpleBusinessMessageException
+
+class UnableToFindCountry(val countryCode: String) : SimpleBusinessMessageException("Could not find country $countryCode")

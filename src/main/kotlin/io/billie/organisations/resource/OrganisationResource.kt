@@ -38,12 +38,8 @@ class OrganisationResource(val service: OrganisationService) {
             ApiResponse(responseCode = "400", description = "Bad request", content = [Content()])]
     )
     fun createOrganisation(@Valid @RequestBody organisation: OrganisationRequest): Entity {
-        try {
-            val id = service.createOrganisation(organisation)
-            return Entity(id)
-        } catch (e: UnableToFindCountry) {
-            throw ResponseStatusException(BAD_REQUEST, e.message)
-        }
+        val id = service.createOrganisation(organisation)
+        return Entity(id)
     }
 
 }
