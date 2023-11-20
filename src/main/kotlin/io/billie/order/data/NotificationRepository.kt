@@ -15,8 +15,8 @@ import java.util.UUID
 class OrderNotificationRepository(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) {
 
     fun createNotification(notificationDescription: String, organisationId: UUID) : UUID {
-        val sql = "INSERT INTO orders_schema.order_notifications (notification_description, organisation_id, status) " +
-                "VALUES (:notificationDescription, :organisationId, :status)"
+        val sql = """INSERT INTO orders_schema.order_notifications (notification_description, organisation_id, status) 
+                VALUES (:notificationDescription, :organisationId, :status)""".trimIndent()
 
         val keyHolder = GeneratedKeyHolder()
 

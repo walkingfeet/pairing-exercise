@@ -49,7 +49,8 @@ class ProductOrderRepository(
 
     fun batchUpdateProductsAmountShipped(orderId: UUID, productUpdates: List<ShippedProduct>) {
         val sql = "UPDATE orders_schema.product_orders " +
-                "SET products_amount_shipped = products_amount_shipped + :additionalAmountShipped " +
+                "SET products_amount_shipped = products_amount_shipped + :additionalAmountShipped, " +
+                "updated = now() " +
                 "WHERE order_id = :orderId AND product_id = :productId"
 
         val batchArgs = productUpdates.map {

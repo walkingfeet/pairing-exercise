@@ -40,10 +40,10 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
 
     // DN: Method to expand in future - for example we are using some list in UI
     fun findProductsByOrganisationId(organisationId: UUID): List<ProductResponse> {
-        val sql = "   SELECT id, organisation_id, name, created, updated " +
-                "            FROM orders_schema.products " +
-                "            WHERE organisation_id = :organisation_id " +
-                "            ORDER BY created DESC "
+        val sql = """SELECT id, organisation_id, name, created, updated 
+                            FROM orders_schema.products 
+                            WHERE organisation_id = :organisation_id 
+                            ORDER BY created DESC """.trimIndent()
 
         val params = mapOf("organisation_id" to organisationId)
 
@@ -55,9 +55,9 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
     }
 
     fun findProductById(productId: UUID): ProductResponse? {
-        val sql = "   SELECT id, name, organisation_id, created, updated " +
-                "            FROM orders_schema.products " +
-                "            WHERE id = :productId "
+        val sql = """SELECT id, name, organisation_id, created, updated
+                            FROM orders_schema.products
+                            WHERE id = :productId"""
 
         val params = mapOf("productId" to productId)
 

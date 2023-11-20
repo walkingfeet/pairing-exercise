@@ -1,6 +1,5 @@
 package io.billie.order.resource
 
-import io.billie.order.exception.OrganisationNotFoundException
 import io.billie.order.exception.SimpleBusinessMessageException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

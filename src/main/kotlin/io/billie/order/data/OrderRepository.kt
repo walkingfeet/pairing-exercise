@@ -39,10 +39,10 @@ class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
     }
 
     fun updateOrderStatus(orderId: UUID, orderStatus: OrderStatus) {
-        val sql = "UPDATE orders_schema.orders " +
-                "SET status = :newStatus, " +
-                "updated = now() " +
-                "WHERE id = :orderId "
+        val sql = """UPDATE orders_schema.orders 
+                SET status = :newStatus,
+                updated = now()
+                WHERE id = :orderId""".trimIndent()
 
         val paramMap = mapOf("orderId" to orderId, "newStatus" to OrderStatus.SHIPPED.toString())
 
@@ -50,9 +50,9 @@ class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
     }
 
     fun findOrderById(orderId: UUID): Order? {
-        val sql = "SELECT id, buyer_id, merchant_id, total_price, status, created, updated " +
-                "FROM orders_schema.orders " +
-                "WHERE id = :orderId"
+        val sql = """SELECT id, buyer_id, merchant_id, total_price, status, created, updated 
+                FROM orders_schema.orders 
+                WHERE id = :orderId""".trimIndent()
 
         val paramMap = mapOf("orderId" to orderId)
 
