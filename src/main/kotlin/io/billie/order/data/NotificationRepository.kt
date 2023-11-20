@@ -2,6 +2,7 @@ package io.billie.order.data
 
 import io.billie.order.model.NotificationStatus
 import io.billie.order.model.OrderNotification
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -32,12 +33,16 @@ class OrderNotificationRepository(private val namedParameterJdbcTemplate: NamedP
 
     fun findById(id: UUID): OrderNotification? {
         val sql = "SELECT id, notification_description, organisation_id, status FROM orders_schema.order_notifications WHERE id = :id"
-        val params =  mapOf("id" to id);
-        return namedParameterJdbcTemplate.queryForObject(
-            sql,
-            params,
-            OrderNotificationsRowMapper()
-        )
+        val params =  mapOf("id" to id)
+        return try{
+            namedParameterJdbcTemplate.queryForObject(
+                sql,
+                params,
+                OrderNotificationsRowMapper()
+            )
+        } catch (ex: EmptyResultDataAccessException) {
+            return null
+        }
     }
 
     private class OrderNotificationsRowMapper : RowMapper<OrderNotification> {

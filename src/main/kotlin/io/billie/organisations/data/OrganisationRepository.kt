@@ -3,6 +3,7 @@ package io.billie.organisations.data
 import io.billie.countries.model.CountryResponse
 import io.billie.organisations.viewmodel.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.ResultSetExtractor
 import org.springframework.jdbc.core.RowMapper
@@ -36,7 +37,12 @@ class OrganisationRepository {
     }
 
     fun findOrganisationById(id: UUID): OrganisationResponse? {
-        return jdbcTemplate.queryForObject(organisationQuery() + " WHERE id = ?", organisationMapper(), id)
+        return try{
+            jdbcTemplate.queryForObject(organisationQuery() + " WHERE o.id = ?", organisationMapper(), id)
+        } catch (ex: EmptyResultDataAccessException) {
+            return null
+        }
+
     }
 
     private fun valuesValid(organisation: OrganisationRequest): Boolean {

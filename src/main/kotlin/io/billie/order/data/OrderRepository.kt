@@ -2,6 +2,7 @@ package io.billie.order.data
 
 import io.billie.order.model.Order
 import io.billie.order.model.OrderStatus
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -55,7 +56,11 @@ class OrderRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) {
 
         val paramMap = mapOf("orderId" to orderId)
 
-        return jdbcTemplate.queryForObject(sql, paramMap, OrderRowMapper())
+        return try {
+            jdbcTemplate.queryForObject(sql, paramMap, OrderRowMapper())
+        } catch (ex: EmptyResultDataAccessException) {
+            return null
+        }
     }
 
     private class OrderRowMapper : RowMapper<Order> {

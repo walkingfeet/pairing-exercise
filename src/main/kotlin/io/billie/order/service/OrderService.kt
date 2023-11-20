@@ -33,13 +33,13 @@ class OrderService(private val orderRepository: OrderRepository,
 
         // DN: I also could make list of errors for better user experience
         orderRequest.productList.forEach{
-            productRepository.findProductsById(it.productId) ?: throw ProductNotFoundException()
+            productRepository.findProductById(it.productId) ?: throw ProductNotFoundException()
         }
 
         // DN: Make status in progress - as far as merchant should not approve it
         val orderId = orderRepository.createOrder(orderRequest.buyerId, orderRequest.merchantId, orderRequest.totalPrice, OrderStatus.IN_PROGRESS)
         productOrderRepository.createOrderProducts(orderId, orderRequest.productList)
-        return orderId;
+        return orderId
     }
 
     /**

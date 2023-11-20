@@ -2,6 +2,7 @@ package io.billie.order.data
 
 import io.billie.order.viewmodel.CreateProductRequest
 import io.billie.order.viewmodel.ProductResponse
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -53,18 +54,22 @@ class ProductRepository (private val jdbcTemplate: NamedParameterJdbcTemplate){
         )
     }
 
-    fun findProductsById(productId: UUID): ProductResponse? {
+    fun findProductById(productId: UUID): ProductResponse? {
         val sql = "   SELECT id, name, organisation_id, created, updated " +
                 "            FROM orders_schema.products " +
                 "            WHERE id = :productId "
 
         val params = mapOf("productId" to productId)
 
-        return jdbcTemplate.queryForObject(
-            sql,
-            params,
-            ProductRowMapper()
-        )
+        return try{
+            jdbcTemplate.queryForObject(
+                sql,
+                params,
+                ProductRowMapper()
+            )
+        } catch (ex: EmptyResultDataAccessException) {
+            return null
+        }
     }
 
     private class ProductRowMapper : RowMapper<ProductResponse> {

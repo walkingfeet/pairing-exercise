@@ -9,7 +9,9 @@ import io.billie.organisations.viewmodel.OrganisationRequest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
+import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 
 class ProductRepositoryTest: SpringIntegrationTest() {
@@ -43,5 +45,11 @@ class ProductRepositoryTest: SpringIntegrationTest() {
             result[1].copy(id = productIdFirst, name = createProductRequestFirst.name)
         )
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun shouldReturnNullWhenNoProductFound() {
+        val product = productRepository.findProductById(UUID.randomUUID())
+        assertNull(product, "Product should not be found")
     }
 }
