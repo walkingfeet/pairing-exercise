@@ -22,7 +22,9 @@ import javax.validation.Valid
 @RequestMapping("/orders")
 class OrderResource(private val orderService: OrderService) {
 
-    @PostMapping
+    // DN: method calls checkout because in possible future needs checkout is more complex process than just create order
+    // Separated to method
+    @PostMapping("/checkout")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -40,7 +42,7 @@ class OrderResource(private val orderService: OrderService) {
         return Entity(orderService.checkoutOrder(checkoutOrderRequest))
     }
 
-    @PostMapping("/make-shipment")
+    @PostMapping("/shipment")
     @ApiResponses(
         value = [
             ApiResponse(

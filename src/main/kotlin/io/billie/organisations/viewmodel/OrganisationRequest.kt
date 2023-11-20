@@ -7,7 +7,6 @@ import java.time.LocalDate
 import java.util.*
 import javax.validation.constraints.NotBlank
 
-@Table("ORGANISATIONS")
 data class OrganisationRequest(
 
     @field:NotBlank val name: String,

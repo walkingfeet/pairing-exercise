@@ -7,14 +7,14 @@ import javax.validation.constraints.Size
 
 data class ShippingOrderRequest(
     val orderId: UUID,
-    @Valid
-    @Size(min = 1)
+    @field:Valid
+    @field:Size(min = 1)
     val shippedProductList: List<ShippedProduct>
 ) {
 }
 
 data class ShippedProduct(
     val productId: UUID,
-    @Min(1)
+    @field:Min(1)
     val amount: Int
 )

@@ -9,15 +9,16 @@ import javax.validation.constraints.Size
 data class CheckoutOrderRequest(
     val buyerId: UUID,
     val merchantId: UUID,
+    @field:Min(1)
     val totalPrice: BigDecimal,
-    @Valid
-    @Size(min = 1)
+    @field:Valid
+    @field:Size(min = 1)
     val productList: List<ProductInOrder>
 )
 
 
 data class ProductInOrder(
     val productId: UUID,
-    @Min(1)
+    @field:Min(1)
     val amount: Int
 )

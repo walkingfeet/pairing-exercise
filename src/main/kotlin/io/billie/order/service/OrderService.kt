@@ -6,6 +6,7 @@ import io.billie.order.data.ProductOrderRepository
 import io.billie.order.data.ProductRepository
 import io.billie.order.exception.OrderNotFoundException
 import io.billie.order.exception.OrganisationNotFoundException
+import io.billie.order.exception.ProductIsNotFromMerchantInOrder
 import io.billie.order.exception.ProductNotFoundException
 import io.billie.order.exception.TotalShippedIsAboveThanInOrder
 import io.billie.order.model.OrderStatus
@@ -33,7 +34,10 @@ class OrderService(private val orderRepository: OrderRepository,
 
         // DN: I also could make list of errors for better user experience
         orderRequest.productList.forEach{
-            productRepository.findProductById(it.productId) ?: throw ProductNotFoundException()
+           val product = productRepository.findProductById(it.productId) ?: throw ProductNotFoundException()
+            if(product.organisationId != orderRequest.merchantId) {
+                throw ProductIsNotFromMerchantInOrder()
+            }
         }
 
         // DN: Make status in progress - as far as merchant should not approve it
